@@ -1,0 +1,72 @@
+{% extends "base.html" %} {% block title %} IT Solution test task {% endblock %}
+{% block content %}
+<p> Ваша цитата: </p>
+    <q>{{ quote.quote }}</q> - {{ quote.source }}
+    <br>👁: {{quote.view_count}}
+    <br>👍: <span id="likes_counter">{{quote.likes}}</span>
+    <br>👎: <span id="dislikes_counter">{{quote.dislikes}}</span>
+
+    <br>
+    <button type="button" id="like_button">👍</button>
+    <button type="button" id="dislike_button">👎</button>
+
+{% endblock %}
+
+{% block script %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const likeButton = document.getElementById("like_button")
+    const dislikeButton = document.getElementById("dislike_button")
+    const likesCounter = document.getElementById("likes_counter")
+    const dislikesCounter = document.getElementById("dislikes_counter")
+
+    const increaseLikes = (changedOpinion) => {
+        var id = {{ quote.id }};
+        if (changedOpinion) id *= -1;
+        fetch('like/', {
+            method: 'POST',
+            body: id,
+        });
+    }
+
+    const increaseDislikes = changedOpinion => {
+        var id = {{ quote.id }};
+        if (changedOpinion) id *= -1;
+
+        fetch('dislike/', {
+            method: 'POST',
+            body: id,
+        })
+    }
+
+    likeButton.addEventListener('click', () => {
+        likeButton.disabled = true;
+
+        likesCounter.textContent = Number(likesCounter.textContent) + 1
+        if (dislikeButton.disabled) {
+            dislikeButton.disabled = false;
+            increaseLikes(true)
+            dislikesCounter.textContent = Number(dislikesCounter.textContent) - 1
+        }
+        else {
+            increaseLikes(false);
+        }
+    })
+
+    dislikeButton.addEventListener('click', () => {
+        dislikeButton.disabled = true;
+
+        dislikesCounter.textContent = Number(dislikesCounter.textContent) + 1
+        if (likeButton.disabled) { 
+            likeButton.disabled = false;
+            increaseDislikes(true)
+            likesCounter.textContent = Number(likesCounter.textContent) - 1
+        }
+        else {
+            increaseDislikes(false);
+        }
+    })
+})
+</script>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %} {% block title %} Add quote {% endblock %}
+{% block content %}
+<script> if ( {{ log }} ) console.log({{"post"}}) </script>
+<p> Добавьте свою цитату </p>
+<form method="post">
+    {% csrf_token %}
+    Добавить источник {{ sourceform.name }}    
+
+    <br> {{message}}
+    <br>
+    <br> <button type="submit">Добавить</button>
+
+</form>
+
+<form method="post">
+    {% csrf_token %}
+
+    <br> Добавить цитату
+    <br> Цитата {{ quoteform.quote }}
+    <br> Источник {{ quoteform.source }}
+    <br> Вес {{ quoteform.weight }}
+    <br> {{message}}
+    <br>
+    <br> <button type="submit">Добавить</button>
+</form>
+{% endblock %}

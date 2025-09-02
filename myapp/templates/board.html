@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% block title %} Popular quotes {% endblock %}
+{% block content %}
+<p> Лучшие 10 цитат: </p>
+<ul>
+    {% for quote in quotes %}
+        <li>
+            <q>{{ quote.quote }}</q> - {{ quote.source }}
+            <br>👁: {{quote.view_count}}
+            <br>👍: {{quote.likes}}
+            <br>👎: {{quote.dislikes}}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
